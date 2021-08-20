@@ -1,0 +1,50 @@
+{
+  "name": "envvv",
+  "version": "1.0.0",
+  "description": "Yet another extendable env parser, comfortably typed.",
+  "keywords": ["env", "process.env", "environment", "variables", "parser"],
+  "author": {
+    "name": "Yuhsak Inoue",
+    "email": "yuhsak.inoue@gmail.com",
+    "url": "https://github.com/Yuhsak"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Yuhsak/envvv.git"
+  },
+  "main": "lib/common/index.js",
+  "types": "lib/common/index.d.ts",
+  "module": "lib/esm/index.js",
+  "files": [
+    "lib",
+    "src",
+    "!lib/**/*.tsbuildinfo",
+    "tsconfig.json",
+    "tsconfig.esm.json"
+  ],
+  "scripts": {
+    "clean:dist": "rimraf lib",
+    "clean:test": "rimraf coverage",
+    "clean": "run-p clean:*",
+    "test:type": "tsc --noEmit",
+    "test:format": "prettier --check .",
+    "test:impl": "jest",
+    "test": "run-p test:*",
+    "build:watch": "npm run build -- --watch",
+    "build": "tsc -b tsconfig.json tsconfig.esm.json",
+    "prebuild": "run-p clean:dist",
+    "start": "npm run watch",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.2.80",
+    "@swc/jest": "^0.1.4",
+    "@types/jest": "^27.0.0",
+    "jest": "27.0.6",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.3.2",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.3.5"
+  }
+}
