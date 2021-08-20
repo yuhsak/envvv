@@ -4,12 +4,17 @@ import type { Dict, Parser } from './types'
 export const resolve =
   <T>(parser: Parser<T>) =>
   <K extends string>(key: K) => {
+    function withOption(): (obj: Dict) => { key: K; value?: T | undefined }
     function withOption<R extends T>(): (obj: Dict) => { key: K; value?: R | undefined }
+    function withOption(fallback: T): (obj: Dict) => {
+      key: K
+      value: T
+    }
     function withOption<R extends T>(
       fallback: R,
     ): (obj: Dict) => {
       key: K
-      value: R extends T ? T : R
+      value: R
     }
     function withOption<R extends T>(fallback?: R) {
       return (
@@ -18,7 +23,7 @@ export const resolve =
         | { key: K; value?: R | undefined }
         | {
             key: K
-            value: R extends T ? T : R
+            value: R
           } => {
         const v = obj[key]
         if (isString(v)) {
