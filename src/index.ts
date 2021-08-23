@@ -1,4 +1,5 @@
 export * from './resolver'
 export * from './resolve'
+export * from './decorator'
 export * from './combine'
 export * from './types'

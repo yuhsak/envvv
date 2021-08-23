@@ -1,5 +1,6 @@
 import { combine } from '../src/combine'
-import { int, float, str, json, bool, array, line } from '../src/resolver'
+import { int, float, str, json, bool } from '../src/resolver'
+import { array, line, required } from '../src/decorator'
 
 type Auth = {
   id: string
@@ -34,6 +35,7 @@ describe('combine', () => {
       int('N_PROCESS')(),
       float('FRACTION')(0.5),
       bool('USE_MOCK')(false),
+      required(str('API_KEY')()),
       array(str('CORS')('*')),
       array(int('SCHEDULED_HOUR')()),
       array(int('SCHEDULED_MINUTES')()),
@@ -44,6 +46,7 @@ describe('combine', () => {
     const env = {
       PORT: '8080',
       USE_MOCK: 'true',
+      API_KEY: 'abcde',
       SCHEDULED_MINUTES: '10,20 30\n40,,50 , \n60',
       AUTH: '{"id": "abc", "password": "123"}',
       USER: '{"name": "Bob"}\n{"name": "Alice"}',
@@ -57,6 +60,7 @@ describe('combine', () => {
       N_PROCESS: undefined,
       FRACTION: 0.5,
       USE_MOCK: true,
+      API_KEY: 'abcde',
       CORS: ['*'],
       SCHEDULED_HOUR: [],
       SCHEDULED_MINUTES: [10, 20, 30, 40, 50, 60],

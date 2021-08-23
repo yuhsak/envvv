@@ -11,7 +11,17 @@ npm install envvv
 ## Usage
 
 ```ts
-import { combine, str, int, float, bool, json, array, line } from 'envvv'
+import {
+  combine,
+  str,
+  int,
+  float,
+  bool,
+  json,
+  array,
+  line,
+  required
+} from 'envvv'
 
 type Auth = {
   id: string
@@ -28,6 +38,7 @@ const parse = combine([
   int('N_PROCESS')(),
   float('FRACTION')(0.5),
   bool('USE_MOCK')(false),
+  required(str('API_KEY')()),
   array(str('CORS')('*')),
   array(int('SCHEDULED_HOURS')()),
   array(int('SCHEDULED_MINUTES')()),
@@ -42,6 +53,7 @@ type parse = (obj: Record<string, string | undefined>) => {
   N_PROCESS?: number
   FRACTION: number
   USE_MOCK: boolean
+  API_KEY: string
   CORS: string[]
   SCHEDULED_HOURS: number[]
   SCHEDULED_MINUTES: number[]
@@ -55,6 +67,7 @@ type parse = (obj: Record<string, string | undefined>) => {
 const processEnv = {
   PORT: '8080',
   USE_MOCK: 'true',
+  API_KEY: 'abcde',
   SCHEDULED_MINUTES: '10,20 30\n40,,50 , \n60',
   AUTH: '{"id": "abc", "password": "123"}',
   USER: '{"name": "Bob"}\n{"name": "Alice"}',
@@ -69,6 +82,7 @@ res = {
   N_PROCESS: undefined,
   FRACTION: 0.5,
   USE_MOCK: true,
+  API_KEY: 'abcde',
   CORS: ['*'],
   SCHEDULED_HOURS: [],
   SCHEDULED_MINUTES: [10, 20, 30, 40, 50, 60],

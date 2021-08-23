@@ -11,3 +11,5 @@ export type Ret<T extends (...args: any[]) => any> = T extends infer U
 export type Dict = Record<string, string | undefined>
 
 export type Parser<T> = (v: string) => T
+
+export type Resolver<K, V> = { key: K; fn: (obj: Dict) => { key: K; value?: V } }
