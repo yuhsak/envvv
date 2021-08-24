@@ -35,8 +35,12 @@ export const resolve =
             } => {
           const v = obj[key]
           if (isString(v)) {
-            const value = parser(v) as R
-            return { key, value }
+            try {
+              const value = parser(v) as R
+              return { key, value }
+            } catch (e) {
+              throw new Error(`an error occured while parsing value for key "${key}": ${e.message}`)
+            }
           }
           if (fallback !== void 0) {
             return { key, value: fallback }
