@@ -1,10 +1,20 @@
 import type { Ret, Dict, UnionToIntersection } from './types'
 
 export const combine =
-  <T extends { key: string; fn: (arg: Dict) => { key: string; value?: unknown } }[]>(resolvers: T) =>
+  <T extends { key: string; fallback?: any; fn: (arg: Dict) => { key: string; value?: unknown } }[]>(
+    resolvers: T,
+    { fallbackError = false }: { fallbackError?: boolean } = {},
+  ) =>
   (arg: Dict): UnionToIntersection<Ret<T[number]['fn']>> => {
     return resolvers.reduce((acc, resolve) => {
-      const { key, value } = resolve.fn(arg)
-      return { ...acc, [key]: value }
+      try {
+        const { key, value } = resolve.fn(arg)
+        return { ...acc, [key]: value }
+      } catch (e) {
+        if (fallbackError) {
+          return { ...acc, [resolve.key]: resolve.fallback }
+        }
+        throw e
+      }
     }, {} as any)
   }

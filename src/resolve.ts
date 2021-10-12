@@ -8,6 +8,7 @@ export const resolve =
     function withOption<R extends T>(): { key: K; fn: (obj: Dict) => { key: K; value?: R | undefined } }
     function withOption(fallback: T): {
       key: K
+      fallback: T
       fn: (obj: Dict) => {
         key: K
         value: T
@@ -17,6 +18,7 @@ export const resolve =
       fallback: R,
     ): {
       key: K
+      fallback: R
       fn: (obj: Dict) => {
         key: K
         value: R
@@ -25,6 +27,7 @@ export const resolve =
     function withOption<R extends T>(fallback?: R) {
       return {
         key,
+        fallback,
         fn: (
           obj: Dict,
         ):
@@ -39,7 +42,7 @@ export const resolve =
               const value = parser(v) as R
               return { key, value }
             } catch (e) {
-              throw new Error(`an error occured while parsing value for key "${key}": ${e.message}`)
+              throw new Error(`an error occured while parsing value for key "${key}": ${(e as any).message}`)
             }
           }
           if (fallback !== void 0) {
