@@ -33,10 +33,9 @@
     "clean:dist": "rimraf lib",
     "clean:test": "rimraf coverage",
     "clean": "run-p clean:*",
-    "test:type": "tsc --noEmit",
-    "test:format": "prettier --check .",
-    "test:impl": "jest",
-    "test": "run-p test:*",
+    "check:tsc": "tsc --noEmit",
+    "check:prettier": "prettier --check .",
+    "test": "jest",
     "build:watch": "npm run build -- --watch",
     "build": "tsc -b tsconfig.json tsconfig.esm.json",
     "prebuild": "run-p clean:dist",
@@ -49,9 +48,9 @@
     "@types/jest": "^27.0.0",
     "jest": "27.0.6",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.3.2",
+    "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
-    "typescript": "^4.3.5"
+    "typescript": "^4.7.3"
   },
   "sideEffects": false
 }

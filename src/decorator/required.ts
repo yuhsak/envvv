@@ -1,6 +1,6 @@
 import type { Dict, Resolver } from '../types'
 
-export const required = <K extends string, V>(resolver: Resolver<K, V>) => {
+export const required = <K extends string, V>(resolver: Resolver<K, V | undefined>) => {
   return {
     key: resolver.key,
     fn: (obj: Dict): { key: K; value: V } => {

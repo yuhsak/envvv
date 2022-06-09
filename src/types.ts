@@ -12,4 +12,8 @@ export type Dict = Record<string, string | undefined>
 
 export type Parser<T> = (v: string) => T
 
-export type Resolver<K = string, V = unknown> = { key: K; fallback?: V; fn: (obj: Dict) => { key: K; value?: V } }
+export type Resolver<K = string, V = unknown> = {
+  key: K
+  fallback?: V | undefined
+  fn: (obj: Dict) => { key: K; value: V | undefined }
+}
