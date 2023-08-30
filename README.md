@@ -17,6 +17,7 @@ import {
   int,
   float,
   bool,
+  date,
   json,
   array,
   line,
@@ -38,6 +39,7 @@ const parse = combine([
   int('N_PROCESS')(),
   float('FRACTION')(0.5),
   bool('USE_MOCK')(false),
+  date('START_DATE')(),
   required(str('API_KEY')()),
   array(str('CORS')('*')),
   array(int('SCHEDULED_HOURS')()),
@@ -53,6 +55,7 @@ type parse = (obj: Record<string, string | undefined>) => {
   N_PROCESS?: number
   FRACTION: number
   USE_MOCK: boolean
+  START_DATE?: Date
   API_KEY: string
   CORS: string[]
   SCHEDULED_HOURS: number[]
@@ -67,6 +70,7 @@ type parse = (obj: Record<string, string | undefined>) => {
 const processEnv = {
   PORT: '8080',
   USE_MOCK: 'true',
+  START_DATE: '2023-01-01T00:00:00.000Z',
   API_KEY: 'abcde',
   SCHEDULED_MINUTES: '10,20 30\n40,,50 , \n60',
   AUTH: '{"id": "abc", "password": "123"}',
@@ -82,6 +86,7 @@ res = {
   N_PROCESS: undefined,
   FRACTION: 0.5,
   USE_MOCK: true,
+  START_DATE: Date('2023-01-01T00:00:00.000Z'),
   API_KEY: 'abcde',
   CORS: ['*'],
   SCHEDULED_HOURS: [],
@@ -101,10 +106,10 @@ res = {
 import { resolve, combine, int } from 'envvv'
 import type { Parser } from 'envvv'
 
-const asOnOff: Parser<'ON' | 'OFF'> = (v) => {
+const asOnOff: Parser<'ON' | 'OFF'> = (v: string) => {
   if (/^on$/i.test(v)) return 'ON'
   if (/^off$/i.test(v)) return 'OFF'
-  throw new Error('failed to parse value as "ON" and "OFF"')
+  throw new Error('failed to parse value as "ON" nor "OFF"')
 }
 
 const onoff = resolve(asOnOff)
@@ -132,6 +137,6 @@ parse({ SWITCH: 'on' })
 
 parse({ SWITCH: 'true' })
 /*
-throws Error('failed to parse value as "ON" and "OFF"')
+throws Error('failed to parse value as "ON" nor "OFF"')
 */
 ```
